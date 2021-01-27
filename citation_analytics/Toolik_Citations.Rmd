@@ -1,0 +1,36 @@
+---
+title: "DataOne Toolik Citations"
+author: "Maya Samet"
+date: "8/6/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(jsonlite)
+library(dplyr)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+toolik_data<-fromJSON("toolik_datasets.json")
+toolik_dois<-toolik_data[["facet_counts"]][["facet_fields"]][["id"]] %>%
+  as.data.frame() %>%
+  filter(`.`!=1, str_detect(`.`, "^(?:doi|urn)"))
+  
+toolik_dois
+```
+
+```{r}
+abs_cit <- read.csv("adc_citation_keyword_search_ycomp.csv")
+
+abs_cit_toolik <- inner_join(toolik_dois, abs_cit, by=c("."="dataset_id"))
+  
+View(abs_cit_toolik)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

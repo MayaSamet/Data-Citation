@@ -1,0 +1,74 @@
+article_id,article_doi,abs_or_full,dataset_doi,cit_location,relation_type,found_by,notes
+1,10.1111/ecog.04630,full,,"methods, references",Cites,Maya,cites knb dataset - https://knb.ecoinformatics.org/#view/doi:10.5063/F1W957BW
+2,10.1002/lno.11296,full,urn:uuid:799b7a86-cb1c-497c-a05a-d73492915cad,methods,References,Maya,Lake E1 Time Series (all years)
+2,10.1002/lno.11297,full,10.18739/A27S7HS9S,methods,References,Maya,Lake N2 Time Series (2013-2014)
+2,10.1002/lno.11298,full,10.18739/A2416T05C,methods,References,Maya,Lake N2 Time Series (2014-2015)
+2,10.1002/lno.11299,full,10.18739/A20863604,methods,References,Maya,Lake N2 Time Series (2015-2016)
+2,10.1002/lno.11296,full,urn:uuid:c5d13183-0e4f-4008-9492-b53b2cd40a26,methods,References,Maya,Temperature and bio-geochemical profiles from all lakes
+2,10.1002/lno.11296,full,urn:uuid:dab72bc5-7f7a-4aa3-98e4-0eeb17ccca94.,methods,References,Maya,Carbon dioxide and methane measurements from all lakes
+3,10.1029/2019rg000652,full,,,,Erika,"way too long, no direct citations"
+4,10.5194/bg-2019-437,full,10.18739/A21Z41S5S,conclusions,Cites,Erika,
+5,10.1002/hyp.13611,full,10.18739/A29P2W61J,general,References,Erika,"using keywords kuparuk, precipitation, gauging, and permafrost combined, i narrowed it down to 2 ADC datasets. both seem like they could've potentially been referenced (the article references both the upper kuparuk and the imnavait), but i did not find a specific section that referenced this data. douglas kane is also an author on both of these datasets and the article."
+5,10.1002/hyp.13611,full,10.18739/A2K649S9D,general,References,Erika,see above
+6,10.1038/s41558-019-0688-1,full,10.18739/A24X0Q,,Cites,Erika,https://arcticdata.io/catalog/view/doi:10.18739/A24X0Q
+6,10.1038/s41558-019-0688-1,full,10.18739/A28Q18,,Cites,Erika,https://arcticdata.io/catalog/view/doi:10.18739/A28Q18
+6,10.1038/s41558-019-0688-1,full,10.5065/D6542KRH,,Cites,Erika,https://arcticdata.io/catalog/view/doi:10.5065/D6542KRH
+7,10.1007/s00442-019-04586-8,full,,,,Maya,LTER dataset
+8,10.1038/s41467-020-15014-4,full,,,,Maya,LTER dataset
+9,10.1038/s41561-019-0526-0,full,,,,Maya,could not find dataset
+10,10.1029/2019ef001149,full,,,,Maya,LTER dataset
+11,10.1111/nph.15790,full,,,,Maya,LTER dataset
+12,10.1029/2019WR025621,full,10.18739/A2CF9J675,,References,Maya,found article from dataset instead of other way around
+13,10.1002/lno.11015,full,10.18739/A25M62692,,References,Kelly,
+14,10.1007/s00442-019-04400-5,full,,,References,Kelly,
+15,10.1088/2515-7620/ab4a85,full,,,References,Kelly,
+16,10.1029/2018jg004776,full,,,References,Kelly,
+17,10.5194/bg-16-4051-2019,full,10.18739/A2DF6K36X,,Cites,Kelly,
+18,10.1002/lno.10942,full,,,References,Kelly,
+19,10.1029/2018jg004944,full,,,References,Kelly,
+20,10.1002/ecs2.2677,full,,,References,Kelly,
+21,10.1002/ecs2.2735,full,10.6073/pasta/2302b3a5eab56970aa4e4f71d36b7fce,,References,Kelly,LTER dataset (Found by funding number 0909507)
+22,10.1038/s41558-019-0592-8,full,10.18739/A2V11VK6H,,References,Kelly,Found two potential dataset
+22,10.1038/s41558-019-0592-8,full,10.18739/A2930NV02,,References,Kelly,See above
+23,10.1029/2018wr024636,full,10.18739/A2Z60C249,,References,Kelly,
+24,10.1016/j.scitotenv.2019.01.058,abs,10.18739/A2DF6K36X,,References,Kelly,
+25,10.1111/oik.05738,,,,,,
+26,10.1038/s41559-018-0745-6,,,,,,
+27,10.1038/s41598-019-49296-6,,,,,,
+28,10.1111/geb.12783,,,,,,
+29,10.3390/soilsystems3010001,,,,,,
+30,10.1038/d41586-019-01313-4,,,,,,
+31,10.1139/cjz-2018-0302,,,,,,
+32,10.1111/gcb.14565,,,,,,
+33,10.5194/tc-13-197-2019,,,,,,
+34,10.1111/oik.04398,,,,,,
+35,10.1111/een.12644,,,,,,
+36,10.1111/geb.12821,,,,,,
+37,10.1002/lol2.10060,,,,,,
+38,10.1016/j.orggeochem.2018.08.008,full,10.18739/A2DZ03215,body,References,Maya,
+39,10.1139/as-2017-0025,,,,,,
+40,10.3334/ORNLDAAC/1573,,,,,,
+41,10.1029/2018JF004658,,,,,,
+42,10.1007/s00442-018-4196-1,full,10.18739/A2P843W5Z,Acknowledgements,References,Maya,
+42,10.1007/s00442-018-4196-1,full,10.18739/A2T14TQ0T,Acknowledgements,References,Maya,
+42,10.1007/s00442-018-4196-1,full,10.18739/A2XS5JH54,Acknowledgements,References,Maya,
+43,10.1111/gcb.14448,,,,,,
+44,10.1111/fwb.13162,,,,,,
+45,10.1007/s00300-017-2201-5,,,,,,
+46,10.1186/s40623-018-0912-7,,,,,,
+47,10.1111/gcb.14297,,,,,,
+48,10.1073/pnas.1715382115,,,,,,
+49,10.1002/eap.1755,,,,,,
+50,10.1002/lol2.10083,full,10.18739/A2X54S,Data Availability Statement,References,Maya,
+51,10.1016/j.rse.2018.04.041,,,,,,
+52,10.1016/j.ecolmodel.2018.08.009,,,,,,
+53,10.1038/s41559-018-0612-5,,,,,,
+54,10.1029/2018gl078140,,,,,,
+55,10.1126/sciadv.aaq1084,,,,,,
+56,10.1029/2017GB005840,,,,,,
+57,10.1002/ecs2.2137,,,,,,
+58,10.1088/1748-9326/aaeb50,,,,,,
+59,10.1002/ece3.3939,,,,,,
+60,10.1002/ecm.1280,,,,,,
+61,10.1016/j.gca.2017.12.022,,,,,,
+62,10.1016/j.ecolmodel.2018.05.017,,,,,,

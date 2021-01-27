@@ -1,0 +1,267 @@
+---
+title: "AODTM-5"
+author: "Maya Samet"
+date: "6/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(stringr)
+library(rcrossref)
+```
+
+## AODTM-5 - citation survey
+
+First, ingest text block including all 173 citations of the AODTM-5 model development article. I've deleted some text in some of them (foreign language / special characters), leaving only viable ASCII characters, so some citations may look incomplete of include only a year. 
+
+```{r}
+aodtm5_citinglit <- "(2020).
+Crossref
+Lars Chresten Lund-Hansen, Jørgen Bendtsen, Tanja Stratmann, Rasmus Tonboe, Steffen Malskær Olsen, Stiig Markager, Brian K. Sorrell, Will low primary production rates in the Amundsen Basin (Arctic Ocean) remain low in a future ice-free setting, and what governs this production?, Journal of Marine Systems, 10.1016/j.jmarsys.2019.103287, (103287), (2020).
+Crossref
+Zoé Koenig, Ilker Fer, Eivind Kolås, Trygve O. Fossum, Petter Norgren, Martin Ludvigsen, Observations of Turbulence at a Near‐Surface Temperature Front in the Arctic Ocean, Journal of Geophysical Research: Oceans, 10.1029/2019JC015526, 125, 4, (2020).
+Wiley Online Library
+Kristen A. Davis, Robert S. Arthur, Emma C. Reid, Justin S. Rogers, Oliver B. Fringer, Thomas M. DeCarlo, Anne L. Cohen, Fate of Internal Waves on a Shallow Shelf, Journal of Geophysical Research: Oceans, 10.1029/2019JC015377, 125, 5, (2020).
+Wiley Online Library
+Alexander Osadchiev, Ksenia Silvestrova, Stanislav Myslenkov, Wind-Driven Coastal Upwelling near Large River Deltas in the Laptev and East-Siberian Seas, Remote Sensing, 10.3390/rs12050844, 12, 5, (844), (2020).
+Crossref
+G. N. Voinov, O. A. Morozova, A. V. Nesterov, K. A. Kornishin, Ya. O. Yefimov, Tides in the southern area of the Kara Sea in the vicinity of the Belyi island, Arctic and Antarctic Research, 10.30758/0555-2648-2020-66-1-6-19, 66, 1, (6-19), (2020).
+Crossref
+Robin Robertson, Changming Dong, An evaluation of the performance of vertical mixing parameterizations for tidal mixing in the Regional Ocean Modeling System (ROMS), Geoscience Letters, 10.1186/s40562-019-0146-y, 6, 1, (2019).
+Crossref
+Yusuke Kawaguchi, Motoyo Itoh, Yasushi Fukamachi, Erika Moriya, Jonaotaro Onodera, Takashi Kikuchi, Naomi Harada, Year-round observations of sea-ice drift and near-inertial internal waves in the Northwind Abyssal Plain, Arctic Ocean, Polar Science, 10.1016/j.polar.2019.01.004, (2019).
+Crossref
+Chunyan Li, Wei Huang, Brian Milan, Atmospheric Cold Front–Induced Exchange Flows through a Microtidal Multi-Inlet Bay: Analysis Using Multiple Horizontal ADCPs and FVCOM Simulations, Journal of Atmospheric and Oceanic Technology, 10.1175/JTECH-D-18-0143.1, 36, 3, (443-472), (2019).
+Crossref
+Agnieszka Herman, Kacper Wojtysiak, Mateusz Moskalik, Wind wave variability in Hornsund fjord, west Spitsbergen, Estuarine, Coastal and Shelf Science, 10.1016/j.ecss.2018.11.001, 217, (96-109), (2019).
+Crossref
+Sebastian Menze, Randi B. Ingvaldsen, Peter Haugan, Ilker Fer, Arild Sundfjord, Agnieszka Beszczynska‐Moeller, Stig Falk‐Petersen, Atlantic Water Pathways Along the North‐Western Svalbard Shelf Mapped Using Vessel‐Mounted Current Profilers, Journal of Geophysical Research: Oceans, 10.1029/2018JC014299, 124, 3, (1699-1716), (2019).
+Wiley Online Library
+Martin Arntsen, Arild Sundfjord, Ragnheid Skogseth, Małgorzata Błaszczyk, Agnieszka Promińska, Inflow of Warm Water to the Inner Hornsund Fjord, Svalbard: Exchange Mechanisms and Influence on Local Sea Ice Cover and Glacier Front Melting, Journal of Geophysical Research: Oceans, 10.1029/2018JC014315, 124, 3, (1915-1931), (2019).
+Wiley Online Library
+Martin Rückamp, Niklas Neckel, Sophie Berger, Angelika Humbert, Veit Helm, Calving Induced Speedup of Petermann Glacier, Journal of Geophysical Research: Earth Surface, 10.1029/2018JF004775, 124, 1, (216-228), (2019).
+Wiley Online Library
+Peigen Lin, Robert S. Pickart, Leah T. McRaven, Kevin R. Arrigo, Frank Bahr, Kate E. Lowry, Dean A. Stockwell, Calvin W. Mordy, Water Mass Evolution and Circulation of the Northeastern Chukchi Sea in Summer: Implications for Nutrient Distributions, Journal of Geophysical Research: Oceans, 10.1029/2019JC015185, 124, 7, (4416-4432), (2019).
+Wiley Online Library
+Astrid Pacini, G. W. K. Moore, Robert S. Pickart, Carolina Nobre, Frank Bahr, Kjetil Våge, Kevin R. Arrigo, Characteristics and Transformation of Pacific Winter Water on the Chukchi Sea Shelf in Late Spring, Journal of Geophysical Research: Oceans, 10.1029/2019JC015261, 124, 10, (7153-7177), (2019).
+Wiley Online Library
+Ryan M. Scott, Robert S. Pickart, Peigen Lin, Andreas Mnchow, Min Li, Dean A. Stockwell, J. Alexander Brearley, Three‐Dimensional Structure of a Cold‐Core Arctic Eddy Interacting with the Chukchi Slope Current, Journal of Geophysical Research: Oceans, 10.1029/2019JC015523, 124, 11, (8375-8391), (2019).
+Wiley Online Library
+M. Cancet, O. Andersen, A. Abulaitijiang, D. Cotton, J. Benveniste, Improvement of the Arctic Ocean Bathymetry and Regional Tide Atlas: First Result on Evaluating Existing Arctic Ocean Bathymetric Models, , 10.1007/1345_2019_85, (2019).
+Crossref
+CARMEN M. FRATICELLI, PAUL J. MARKWICK, ALLARD W. MARTINIUS, JOHN R. SUTER, ARE TIDES CONTROLLED BY LATITUDE?, LATITUDINAL CONTROLS ON STRATIGRAPHIC MODELS AND SEDIMENTARY CONCEPTS, 10.2110/sepmsp.108., (29-45), (2019).
+Crossref
+Peter E. D. Davis, Helen L. Johnson, Humfrey Melling, Propagation and Vertical Structure of the Tidal Flow in Nares Strait, Journal of Geophysical Research: Oceans, 10.1029/2018JC014122, 124, 1, (281-301), (2019).
+Wiley Online Library
+B. A. Kagan, E. V. Sofina, A. A. Timofeev, The Tidal Effect on Climatic Characteristics of the Kara Sea in the Ice-Free Period, Izvestiya, Atmospheric and Oceanic Physics, 10.1134/S0001433819020087, 55, 2, (188-195), (2019).
+Crossref
+Miriam Seifert, Mario Hoppema, Claudia Burau, Cassandra Elmer, Anna Friedrichs, Jana K. Geuer, Uwe John, Torsten Kanzow, Boris P. Koch, Christian Konrad, Helga van der Jagt, Oliver Zielinski, Morten H. Iversen, Influence of Glacial Meltwater on Summer Biogeochemical Cycles in Scoresby Sund, East Greenland, Frontiers in Marine Science, 10.3389/fmars.2019.00412, 6, (2019).
+Crossref
+Jessica Scheick, Ellyn M. Enderlin, Emily E. Miller, Gordon Hamilton, First-Order Estimates of Coastal Bathymetry in Ilulissat and Naajarsuit Fjords, Greenland, from Remotely Sensed Iceberg Observations, Remote Sensing, 10.3390/rs11080935, 11, 8, (935), (2019).
+Crossref
+S. Kelly, E. Popova, Y. Aksenov, R. Marsh, A. Yool, Lagrangian Modeling of Arctic Ocean Circulation Pathways: Impact of Advection on Spread of Pollutants, Journal of Geophysical Research: Oceans, 10.1002/2017JC013460, 123, 4, (2882-2902), (2018).
+Wiley Online Library
+M. Cancet, O.B. Andersen, F. Lyard, D. Cotton, J. Benveniste, Arctide2017, a high-resolution regional tidal model in the Arctic Ocean, Advances in Space Research, 10.1016/j.asr.2018.01.007, (2018).
+Crossref
+Laurie Padman, Matthew R. Siegfried, Helen A. Fricker, Ocean Tide Influences on the Antarctic and Greenland Ice Sheets, Reviews of Geophysics, 10.1002/2016RG000546, 56, 1, (142-184), (2018).
+Wiley Online Library
+Oleg V. Tarovik, Alex Topaj, Andrey B. Krestyantsev, Aleksander A. Kondratenko, Dmitry A. Zaikin, Study on Operation of Arctic Offshore Complex by Means of Multicomponent Process-Based Simulation, Journal of Marine Science and Application, 10.1007/s11804-018-0053-1, 17, 4, (471-497), (2018).
+Crossref
+Wenli Zhong, Guijun Guo, Jinping Zhao, Tao Li, Xiaoyu Wang, Longjiang Mu, Turbulent mixing above the Atlantic Water around the Chukchi Borderland in 2014, Acta Oceanologica Sinica, 10.1007/s13131-018-1198-0, 37, 3, (31-41), (2018).
+Crossref
+Peter V. Bogorodskii, Andrey V. Pnyushkov, Vasilii Yu. Kustov, Seasonal Freezing of a Subwater Ground Layer at the Laptev Sea Shelf, The Ocean in Motion, 10.1007/978-3-319-71934-4_39, (611-625), (2018).
+Crossref
+B. A. Kagan, E. V. Sofina, A. A. Timofeev, Critical Latitude in Tidal Dynamics Using the Kara Sea as an Example, Izvestiya, Atmospheric and Oceanic Physics, 10.1134/S000143381802010X, 54, 2, (206-212), (2018).
+Crossref
+E.L. Shroyer, Robert S. Pickart, Pathways, timing, and evolution of Pacific Winter Water through Barrow Canyon, Deep Sea Research Part II: Topical Studies in Oceanography, 10.1016/j.dsr2.2018.05.004, (2018).
+Crossref
+Neil J. Fraser, Ragnheid Skogseth, Frank Nilsen, Mark E. Inall, Circulation and exchange in a broad Arctic fjord using glider-based observations, Polar Research, 10.1080/17518369.2018.1485417, 37, 1, (1485417), (2018).
+Crossref
+Zoé Koenig, Amelie Meyer, Christine Provost, Nathalie Sennéchael, Arild Sundfjord, Laurent Beguery, Marylou Athanase, Jean‐Claude Gascard, Cooling and Freshening of the West Spitsbergen Current by Shelf‐Origin Cold Core Lenses, Journal of Geophysical Research: Oceans, 10.1029/2018JC014463, 123, 11, (8299-8312), (2018).
+Wiley Online Library
+ (2018).
+Crossref
+Sünnje L. Basedow, Arild Sundfjord, Wilken-Jon von Appen, Elisabeth Halvorsen, Slawomir Kwasniewski, Marit Reigstad, Seasonal Variation in Transport of Zooplankton Into the Arctic Basin Through the Atlantic Gateway, Fram Strait, Frontiers in Marine Science, 10.3389/fmars.2018.00194, 5, (2018).
+Crossref
+Eivind Kolås, Ilker Fer, Hydrography, transport and mixing of the West Spitsbergen Current: the Svalbard Branch in summer 2015, Ocean Science, 10.5194/os-14-1603-2018, 14, 6, (1603-1618), (2018).
+Crossref
+, Wilken-Jon von Appen, Claudia Wekerle, Does the East Greenland Current exist in the northern Fram Strait?, Ocean Science, 10.5194/os-14-1147-2018, 14, 5, (1147-1165), (2018).
+Crossref
+Dustin Carroll, David A. Sutherland, Emily L. Shroyer, Jonathan D. Nash, Ginny A. Catania, Leigh A. Stearns, Subglacial discharge‐driven renewal of tidewater glacier fjords, Journal of Geophysical Research: Oceans, 10.1002/2017JC012962, 122, 8, (6611-6629), (2017).
+Wiley Online Library
+Zoé Koenig, Christine Provost, Nathalie Sennéchael, Gilles Garric, Jean‐Claude Gascard, The Yermak Pass Branch: A Major Pathway for the Atlantic Water North of Svalbard?, Journal of Geophysical Research: Oceans, 10.1002/2017JC013271, 122, 12, (9332-9349), (2017).
+Wiley Online Library
+Lei Ren, Diarmuid Nagle, Stephen Nash, Michael Hartnett, Investigations into influences of wind field resolution on simulating surface currents for Galway Bay, Energy Procedia, 10.1016/j.egypro.2017.10.312, 136, (151-156), (2017).
+Crossref
+B. A. Kagan, E. V. Sofina, A method of accounting for tidal changes in regional climates of a water basin under conditions of an ice-free Barents Sea, Oceanology, 10.1134/S0001437016060047, 57, 2, (245-252), (2017).
+Crossref
+A. A. Osadchiev, A. S. Izhitskiy, P. O. Zavialov, V. V. Kremenetskiy, A. A. Polukhin, V. V. Pelevin, Z. M. Toktamysova, Structure of the buoyant plume formed by Ob and Yenisei river discharge in the southern part of the Kara Sea during summer and autumn, Journal of Geophysical Research: Oceans, 10.1002/2016JC012603, 122, 7, (5916-5935), (2017).
+Wiley Online Library
+Algot K. Peterson, Ilker Fer, Miles G. McPhee, Achim Randelhoff, Turbulent heat and momentum fluxes in the upper ocean under Arctic sea ice, Journal of Geophysical Research: Oceans, 10.1002/2016JC012283, 122, 2, (1439-1456), (2017).
+Wiley Online Library
+Amelie Meyer, Arild Sundfjord, Ilker Fer, Christine Provost, Nicolas Villacieros Robineau, Zoe Koenig, Ingrid H. Onarheim, Lars H. Smedsrud, Pedro Duarte, Paul A. Dodd, Robert M. Graham, Sunke Schmidtko, Hanna M. Kauko, Winter to summer oceanographic observations in the Arctic Ocean north of Svalbard, Journal of Geophysical Research: Oceans, 10.1002/2016JC012391, 122, 8, (6218-6237), (2017).
+Wiley Online Library
+Janin Schaffer, Wilken‐Jon von Appen, Paul A. Dodd, Coen Hofstede, Christoph Mayer, Laura de Steur, Torsten Kanzow, Warm water pathways toward Nioghalvfjerdsfjorden Glacier, Northeast Greenland, Journal of Geophysical Research: Oceans, 10.1002/2016JC012462, 122, 5, (4004-4020), (2017).
+Wiley Online Library
+Kevin R. Arrigo, Matthew M. Mills, Gert L. Dijken, Kate E. Lowry, Robert S. Pickart, Reiner Schlitzer, Late Spring Nitrate Distributions Beneath the Ice‐Covered Northeastern Chukchi Shelf, Journal of Geophysical Research: Biogeosciences, 10.1002/2017JG003881, 122, 9, (2409-2417), (2017).
+Wiley Online Library
+Jack P.J. O'Carroll, Robert Kennedy, Lei Ren, Stephen Nash, Michael Hartnett, Colin Brown, A comparison of acoustic and observed sediment classifications as predictor variables for modelling biotope distributions in Galway Bay, Ireland, Estuarine, Coastal and Shelf Science, 10.1016/j.ecss.2017.08.005, 197, (258-270), (2017).
+Crossref
+B. A. Kagan, A. A. Timofeev, Simulation of surface and internal semidiurnal tides in the Kara Sea, Izvestiya, Atmospheric and Oceanic Physics, 10.1134/S0001433817020050, 53, 2, (233-241), (2017).
+Crossref
+Igor E. Kozlov, Evgenia V. Zubkova, Vladimir N. Kudryavtsev, Internal Solitary Waves in the Laptev Sea: First Results of Spaceborne SAR Observations, IEEE Geoscience and Remote Sensing Letters, 10.1109/LGRS.2017.2749681, 14, 11, (2047-2051), (2017).
+Crossref
+Lei Ren, Michael Hartnett, Sensitivity analysis of a data assimilation technique for hindcasting and forecasting hydrodynamics of a complex coastal water body, Computers & Geosciences, 10.1016/j.cageo.2016.10.012, 99, (81-90), (2017).
+Crossref
+J.L. Davis, J. De Juan, M. Nettles, P. Elosegui, M.L. Andersen, Evidence for non-tidal diurnal velocity variations of Helheim Glacier, East Greenland, Journal of Glaciology, 10.3189/2014JoG13J230, 60, 224, (1169-1180), (2017).
+Crossref
+E.M. Enderlin, G.S. Hamilton, Estimates of iceberg submarine melting from high-resolution digital elevation models: application to Sermilik Fjord, East Greenland, Journal of Glaciology, 10.3189/2014JoG14J085, 60, 224, (1084-1092), (2017).
+Crossref
+Andreas Münchow, Laurie Padman, Helen A. Fricker, Interannual changes of the floating ice shelf of Petermann Gletscher, North Greenland, from 2000 to 2012, Journal of Glaciology, 10.3189/2014JoG13J135, 60, 221, (489-499), (2017).
+Crossref
+Nat Wilson, Fiammetta Straneo, Patrick Heimbach, Satellite-derived submarine melt rates and mass balance (2011–2015) for Greenland's largest remaining ice tongues, The Cryosphere, 10.5194/tc-11-2773-2017, 11, 6, (2773-2782), (2017).
+Crossref
+Lei Ren, Michael Hartnett, Comparative Study on Assimilating Remote Sensing High Frequency Radar Surface Currents at an Atlantic Marine Renewable Energy Test Site, Remote Sensing, 10.3390/rs9121331, 9, 12, (1331), (2017).
+Crossref
+Tor Knutsen, Peter H. Wiebe, Harald Gjøsæter, Randi B. Ingvaldsen, Gunnar Lien, High Latitude Epipelagic and Mesopelagic Scattering Layers—A Reference for Future Arctic Ecosystem Change, Frontiers in Marine Science, 10.3389/fmars.2017.00334, 4, (2017).
+Crossref
+Lei Ren, Diarmuid Nagle, Michael Hartnett, Stephen Nash, The Effect of Wind Forcing on Modeling Coastal Circulation at a Marine Renewable Test Site, Energies, 10.3390/en10122114, 10, 12, (2114), (2017).
+Crossref
+Lei Ren, Michael Hartnett, Hindcasting and Forecasting of Surface Flow Fields through Assimilating High Frequency Remotely Sensing Radar Data, Remote Sensing, 10.3390/rs9090932, 9, 9, (932), (2017).
+Crossref
+Kjetil Våge, Robert S. Pickart, Vladimir Pavlov, Peigen Lin, Daniel J. Torres, Randi Ingvaldsen, Arild Sundfjord, Andrey Proshutinsky, The Atlantic Water boundary current in the Nansen Basin: Transport and mechanisms of lateral exchange, Journal of Geophysical Research: Oceans, 10.1002/2016JC011715, 121, 9, (6946-6960), (2016).
+Wiley Online Library
+Zoé Koenig, Christine Provost, Nicolas Villacieros‐Robineau, Nathalie Sennéchael, Amelie Meyer, Winter ocean‐ice interactions under thin sea ice observed by IAOOS platforms during N‐ICE2015: Salty surface mixed layer and active basal melt, Journal of Geophysical Research: Oceans, 10.1002/2016JC012195, 121, 10, (7898-7916), (2016).
+Wiley Online Library
+Hayley V. Dosser, Luc Rainville, Dynamics of the Changing Near-Inertial Internal Wave Field in the Arctic Ocean, Journal of Physical Oceanography, 10.1175/JPO-D-15-0056.1, 46, 2, (395-415), (2016).
+Crossref
+Y. D. Chung, Ta-Kang Yeh, G. Xu, C. S. Chen, C. Hwang, H. C. Shih, GPS Height Variations Affected by Ocean Tidal Loading Along the Coast of Taiwan, IEEE Sensors Journal, 10.1109/JSEN.2016.2538325, 16, 10, (3697-3704), (2016).
+Crossref
+Renat Yulmetov, Aleksey Marchenko, Sveinung Løset, Iceberg and sea ice drift tracking and analysis off north-east Greenland, Ocean Engineering, 10.1016/j.oceaneng.2016.07.012, 123, (223-237), (2016).
+Crossref
+Yusuke Kawaguchi, Shigeto Nishino, Jun Inoue, Katsuhisa Maeno, Hiroki Takeda, Kazuhiro Oshima, Enhanced Diapycnal Mixing due to Near-Inertial Internal Waves Propagating through an Anticyclonic Eddy in the Ice-Free Chukchi Plateau, Journal of Physical Oceanography, 10.1175/JPO-D-15-0150.1, 46, 8, (2457-2481), (2016).
+Crossref
+Robert S. Pickart, G.W.K. Moore, Chongyuan Mao, Frank Bahr, Carolina Nobre, Thomas J. Weingartner, Circulation of winter water on the Chukchi shelf in early Summer, Deep Sea Research Part II: Topical Studies in Oceanography, 10.1016/j.dsr2.2016.05.001, 130, (56-75), (2016).
+Crossref
+ANNA E. HOGG, ANDREW SHEPHERD, NOEL GOURMELEN, MARCUS ENGDAHL, Grounding line migration from 1992 to 2011 on Petermann Glacier, North-West Greenland, Journal of Glaciology, 10.1017/jog.2016.83, 62, 236, (1104-1114), (2016).
+Crossref
+Anna Crawford, Peter Wadhams, Till Wagner, Alan Stern, Povi Abrahamsen, Ian Church, Richard Bates, Keith Nicholls, Journey of an Arctic Ice Island, Oceanography, 10.5670/oceanog.2016.30, 29, 2, (2016).
+Crossref
+Malgorzata Stramska, Jagoda Bialogrodzka, Satellite observations of seasonal and regional variability of particulate organic carbon concentration in the Barents Sea, Oceanologia, 10.1016/j.oceano.2016.04.004, 58, 4, (249-263), (2016).
+Crossref
+Maria V. Luneva, Yevgeny Aksenov, James D. Harle, Jason T. Holt, The effects of tides on the water mass mixing and sea ice in the Arctic Ocean, Journal of Geophysical Research: Oceans, 10.1002/2014JC010310, 120, 10, (6669-6699), (2015).
+Wiley Online Library
+Mark E. Inall, Frank Nilsen, Finlo R. Cottier, Ragnhild Daae, Shelf/fjord exchange driven by coastal‐trapped waves in the Arctic, Journal of Geophysical Research: Oceans, 10.1002/2015JC011277, 120, 12, (8283-8303), (2015).
+Wiley Online Library
+William J. Williams, Eddy C. Carmack, The ‘interior' shelves of the Arctic Ocean: Physical oceanographic setting, climatology and effects of sea-ice retreat on cross-shelf exchange, Progress in Oceanography, 10.1016/j.pocean.2015.07.008, 139, (24-41), (2015).
+Crossref
+Maria N. Pisareva, Robert S. Pickart, M.A. Spall, C. Nobre, D.J. Torres, G.W.K. Moore, Terry E. Whitledge, Flow of pacific water in the western Chukchi Sea: Results from the 2009 RUSALCA expedition, Deep Sea Research Part I: Oceanographic Research Papers, 10.1016/j.dsr.2015.08.011, 105, (53-73), (2015).
+Crossref
+Vera Fofonova, Sergey Danilov, Alexey Androsov, Markus Janout, Martin Bauer, Paul Overduin, Polona Itkin, Karen Helen Wiltshire, Impact of wind and tides on the Lena River freshwater plume dynamics in the summer season, Ocean Dynamics, 10.1007/s10236-015-0847-5, 65, 7, (951-968), (2015).
+Crossref
+Yusuke Kawaguchi, Shigeto Nishino, Jun Inoue, Fixed-Point Observation of Mixed Layer Evolution in the Seasonally Ice-Free Chukchi Sea: Turbulent Mixing due to Gale Winds and Internal Gravity Waves, Journal of Physical Oceanography, 10.1175/JPO-D-14-0149.1, 45, 3, (836-853), (2015).
+Crossref
+Kate E. Lowry, Robert S. Pickart, Matthew M. Mills, Zachary W. Brown, Gert L. van Dijken, Nicholas R. Bates, Kevin R. Arrigo, The influence of winter water on phytoplankton blooms in the Chukchi Sea, Deep Sea Research Part II: Topical Studies in Oceanography, 10.1016/j.dsr2.2015.06.006, 118, (53-72), (2015).
+Crossref
+Matthew M. Mills, Zachary W. Brown, Kate E. Lowry, Gert L. van Dijken, Susan Becker, Sharmila Pal, Claudia R. Benitez-Nelson, Meryssa M. Downer, Aaron L. Strong, James H. Swift, Robert S. Pickart, Kevin R. Arrigo, Impacts of low phytoplankton NO3−:PO43− utilization ratios over the Chukchi Shelf, Arctic Ocean, Deep Sea Research Part II: Topical Studies in Oceanography, 10.1016/j.dsr2.2015.02.007, 118, (105-121), (2015).
+Crossref
+Jofrid Skarðhamar, Øystein Skagseth, Jon Albretsen, Diurnal tides on the Barents Sea continental slope, Deep Sea Research Part I: Oceanographic Research Papers, 10.1016/j.dsr.2014.11.008, 97, (40-51), (2015).
+Crossref
+Fearghal O'Donncha, Michael Hartnett, Stephen Nash, Lei Ren, Emanuele Ragnoli, Characterizing observed circulation patterns within a bay using HF radar and numerical model simulations, Journal of Marine Systems, 10.1016/j.jmarsys.2014.10.004, 142, (96-110), (2015).
+Crossref
+Zachary W. Brown, Karen L. Casciotti, Robert S. Pickart, James H. Swift, Kevin R. Arrigo, Aspects of the marine nitrogen cycle of the Chukchi Sea shelf and Canada Basin, Deep Sea Research Part II: Topical Studies in Oceanography, 10.1016/j.dsr2.2015.02.009, 118, (73-87), (2015).
+Crossref
+B. A. Kagan, A. A. Timofeev, Spatial variability in the drag coefficient and its role in tidal dynamics and energetics, a case study: The surface M 2 tide in the subsystem of the Barents and Kara Seas, Izvestiya, Atmospheric and Oceanic Physics, 10.1134/S0001433814060103, 51, 1, (98-111), (2015).
+Crossref
+Tamara Beitzel Barriquand, Pascale Bouruet-Aubertot, Yannis Cuypers, Frédéric Vivier, Antonio Lourenço, Hervé Le Goff, The impacts of stratification on high latitude ocean mixing: A case study of internal waves in Storfjorden, Svalbard, Continental Shelf Research, 10.1016/j.csr.2015.10.001, 110, (162-182), (2015).
+Crossref
+E. Carmack, I. Polyakov, L. Padman, I. Fer, E. Hunke, J. Hutchings, J. Jackson, D. Kelley, R. Kwok, C. Layton, H. Melling, D. Perovich, O. Persson, B. Ruddick, M.-L. Timmermans, J. Toole, T. Ross, S. Vavrus, P. Winsor, Toward Quantifying the Increasing Role of Oceanic Heat in Sea Ice Loss in the New Arctic, Bulletin of the American Meteorological Society, 10.1175/BAMS-D-13-00177.1, 96, 12, (2079-2105), (2015).
+Crossref
+B. A. Kagan, E. V. Sofina, Effect of the tidal mixing on the average climatic characteristics of the Barents Sea, Izvestiya, Atmospheric and Oceanic Physics, 10.1134/S0001433815060079, 51, 6, (651-660), (2015).
+Crossref
+Markus A. Janout, Yevgeny Aksenov, Jens A. Hölemann, Benjamin Rabe, Ursula Schauer, Igor V. Polyakov, Sheldon Bacon, Andrew C. Coward, Michael Karcher, Yueng‐Djern Lenn, Heidemarie Kassens, Leonid Timokhov, Kara Sea freshwater transport through Vilkitsky Strait: Variability, forcing, and further pathways toward the western Arctic Ocean from a model and observations, Journal of Geophysical Research: Oceans, 10.1002/2014JC010635, 120, 7, (4925-4944), (2015).
+Wiley Online Library
+D.C. Agnew, Earth Tides, Treatise on Geophysics, 10.1016/B978-0-444-53802-4.00058-0, (151-178), (2015).
+Crossref
+Lei Ren, Stephen Nash, Michael Hartnett, Observation and modeling of tide- and wind-induced surface currents in Galway Bay, Water Science and Engineering, 10.1016/j.wse.2015.12.001, 8, 4, (345-352), (2015).
+Crossref
+Andreas Münchow, Kelly K. Falkner, Humfrey Melling, Baffin Island and West Greenland Current Systems in northern Baffin Bay, Progress in Oceanography, 10.1016/j.pocean.2014.04.001, 132, (305-317), (2015).
+Crossref
+B. E. Harden, F. Straneo, D. A. Sutherland, Moored observations of synoptic and seasonal variability in the East Greenland Coastal Current, Journal of Geophysical Research: Oceans, 10.1002/2014JC010134, 119, 12, (8838-8857), (2014).
+Wiley Online Library
+Mark E. Inall, Tavi Murray, Finlo R. Cottier, Kilian Scharrer, Timothy J. Boyd, Karen J. Heywood, Suzanne L. Bevan, Oceanic heat delivery via Kangerdlugssuaq Fjord to the south‐east Greenland ice sheet, Journal of Geophysical Research: Oceans, 10.1002/2013JC009295, 119, 2, (631-645), (2014).
+Wiley Online Library
+David A. Sutherland, Fiammetta Straneo, Robert S. Pickart, Characteristics and dynamics of two major Greenland glacial fjords, Journal of Geophysical Research: Oceans, 10.1002/2013JC009786, 119, 6, (3767-3791), (2014).
+Wiley Online Library
+Till J. W. Wagner, Peter Wadhams, Richard Bates, Pedro Elosegui, Alon Stern, Dominic Vella, E. Povl Abrahamsen, Anna Crawford, Keith W. Nicholls, The ootloose mechanism: Iceberg decay from hydrostatic stresses, Geophysical Research Letters, 10.1002/2014GL060832, 41, 15, (5522-5529), (2014).
+Wiley Online Library
+Ilker Fer, Kenneth Drinkwater, Mixing in the Barents Sea Polar Front near Hopen in spring, Journal of Marine Systems, 10.1016/j.jmarsys.2012.01.005, 130, (206-218), (2014).
+Crossref
+J. Emil Nielsen, Rene Forsberg, Gabriel Strykowski, Measured and modelled absolute gravity changes in Greenland, Journal of Geodynamics, 10.1016/j.jog.2013.09.003, 73, (53-59), (2014).
+Crossref
+B.A. Kagan, E.V. Sofina, Surface and internal semidiurnal tides and tidally induced diapycnal diffusion in the Barents Sea: a numerical study, Continental Shelf Research, 10.1016/j.csr.2014.09.010, 91, (158-170), (2014).
+Crossref
+J. A. Åström, D. Vallot, M. Schäfer, E. Z. Welty, S. O'Neel, T. C. Bartholomaus, Yan Liu, T. I. Riikilä, T. Zwinger, J. Timonen, J. C. Moore, Termini of calving glaciers as self-organized critical systems, Nature Geoscience, 10.1038/ngeo2290, 7, 12, (874-878), (2014).
+Crossref
+Kim I. Martini, Harper L. Simmons, Chase A. Stoudt, Jennifer K. Hutchings, Near-Inertial Internal Waves and Sea Ice in the Beaufort Sea*, Journal of Physical Oceanography, 10.1175/JPO-D-13-0160.1, 44, 8, (2212-2234), (2014).
+Crossref
+S. Våge, S.L. Basedow, K.S. Tande, M. Zhou, Physical structure of the Barents Sea Polar Front near Storbanken in August 2007, Journal of Marine Systems, 10.1016/j.jmarsys.2011.11.019, 130, (256-262), (2014).
+Crossref
+Paul R. Holland, Richard E. Hewitt, Matthew M. Scase, Wave Breaking in Dense Plumes, Journal of Physical Oceanography, 10.1175/JPO-D-13-0110.1, 44, 2, (790-800), (2014).
+Crossref
+Markus A. Janout, Yueng-Djern Lenn, Semidiurnal Tides on the Laptev Sea Shelf with Implications for Shear and Vertical Mixing, Journal of Physical Oceanography, 10.1175/JPO-D-12-0240.1, 44, 1, (202-219), (2014).
+Crossref
+Kjell Arne Mork, Kenneth F. Drinkwater, Steingrímur Jónsson, Héðinn Valdimarsson, Marek Ostrowski, Water mass exchanges between the Norwegian and Iceland seas over the Jan Mayen Ridge using in-situ current measurements, Journal of Marine Systems, 10.1016/j.jmarsys.2014.06.008, 139, (227-240), (2014).
+Crossref
+Vidar S. Lien, Bjrn dlandsvik, Bottom water formation as a primer for spring-blooms on Spitsberge, Journal of Marine Systems, 10.1016/j.jmarsys.2011.11.018, 130, (241-247), (2014).
+Crossref"
+```
+
+Next, use the `stringr` package to look only for citation years. We'll be looking for text in the format (####), which should appear 173 in the text, once for each citing article.
+
+```{r}
+pub_yrs<-stringr::str_extract_all(aodtm5_citinglit, "\\(\\d\\d\\d\\d\\)")
+
+View(pub_yrs)
+?rcrossref
+```
+
+rcrossref attempt
+
+```{r}
+my_references_doi <- '10.1029/2003GL019003'
+my_citations <- rcrossref::cr_cn(my_references_doi,
+                                 format = "text",
+                                 style = "chicago-note-bibliography")
+
+my_citations
+?cr_cn
+?c
+```
+
+```{r}
+citation_dates <- ("")
+
+temp<-rep(2004,2) %>%
+  append(rep(2005,5)) %>%
+  append(rep(2006,6)) %>%
+  append(rep(2007,14)) %>%
+  append(rep(2008,15)) %>%
+  append(rep(2009,10)) %>%
+  append(rep(2010,19)) %>%
+  append(rep(2011,17)) %>%
+  append(rep(2012,21)) %>%
+  append(rep(2013,21)) %>%
+  append(rep(2014,33)) %>%
+  append(rep(2015,32)) %>%
+  append(rep(2016,20)) %>%
+  append(rep(2017,30)) %>%
+  append(rep(2018,25)) %>%
+  append(rep(2019,20)) %>%
+  append(rep(2020,9)) 
+
+counts <- table(temp)
+
+barplot(counts, main = "AODTM-5 Citation Counts")
+```

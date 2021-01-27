@@ -1,0 +1,234 @@
+---
+title: "Citation_Analytics"
+author: "Maya Samet"
+date: "7/16/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+setwd("/Users/samet/Documents/R/citation_analytics")
+library(tidyverse)
+library(rcrossref)
+library(jsonlite)
+library(ggplot2)
+```
+
+```{r}
+abs_cit <- read.csv("adc_citation_keyword_search_ycomp.csv")
+found_cit <- read.csv("Found_Citations.csv")
+scythe_cit <- read.csv("scythe_search_results.csv")
+```
+
+```{r}
+View(abs_cit)
+View(found_cit)
+View(scythe_cit)
+```
+
+Generate Journal names for Amber
+```{r}
+# regex for trimming dois
+regex <- "10\\..*"
+
+# function for retrieving journal names using article dois
+journal_from_doi <- function(doi) {
+  try(cr_cn(doi, format="citeproc-json-ish")[["container-title"]])
+}
+
+abs_cit_canonical <- abs_cit %>%
+  # select only datasets with a single representational article
+  filter(num_cit==1) %>%
+  # trim article dois to correct format & creating empty journal field to populate
+  mutate(article_doi=str_extract(article_doi, regex), journal="") 
+  
+# retrieving journal names using article dois
+for (i in 1:nrow(abs_cit_canonical)){
+  if (length(journal_from_doi(abs_cit_canonical$article_doi[i]) > 0)) {
+    abs_cit_canonical$journal[i] <- journal_from_doi(abs_cit_canonical$article_doi[i])
+  }
+}
+
+```
+
+Replicate for all citations, not just canonical
+```{r}
+abs_cit_all_journals <- abs_cit %>%
+  # select only datasets with a single representational article
+  filter(num_cit>1) %>%
+  # trim article dois to correct format & creating empty journal field to populate
+  mutate(article_doi=str_extract(article_doi, regex), journal="")
+
+for (i in 1:nrow(abs_cit_all_journals)){
+  if (length(journal_from_doi(abs_cit_all_journals$article_doi[i]) > 0)) {
+    abs_cit_all_journals$journal[i] <- journal_from_doi(abs_cit_all_journals$article_doi[i])
+  }
+}
+
+# Trimming & summing
+temp_abs_cit_all <- abs_cit_all_journals %>% select(!(abstract:tips)) %>%
+  mutate(journal = gsub(".*Geophysical Research.*","Journal of Geophysical Research", journal)) %>%
+  mutate(journal = gsub("Climate Change Responses","Climate Change", journal)) %>%
+  mutate(journal = gsub("Climatic Change","Climate Change", journal))
+
+journal_sums_all <- table(temp_abs_cit_all$journal)[-1]
+journal_freq_all <- prop.table(journal_sums_all)*100
+
+View(journal_freq_all)
+```
+
+Journal Horiz Barchart (canonical)
+```{r}
+journal_sums_ord <- as.data.frame(journal_sums) %>%
+  arrange(desc(Freq)) %>%
+  mutate(Freq=as.numeric(Freq), Var1=as.character(Var1)) %>%
+  rename(Journal = Var1, Count = Freq) 
+  
+
+p <- ggplot(journal_sums_ord, aes(x =reorder(Journal,Count), y = Count))+
+  geom_col(width = 0.7) +
+  coord_flip() + 
+  scale_y_continuous(breaks=seq(0,10, by=2)) +
+  theme(axis.title.x=element_blank(),
+        axis.title.y=element_blank())
+  
+p
+
+```
+
+All Journal Horiz Barchart
+```{r}
+journal_sums_all_ord <- as.data.frame(journal_sums_all) %>%
+  arrange(desc(Freq)) %>%
+  mutate(Freq=as.numeric(Freq), Var1=as.character(Var1)) %>%
+  rename(Journal = Var1, Count = Freq) 
+  
+
+p <- ggplot(journal_sums_all_ord, aes(x =reorder(Journal,Count), y = Count))+
+  geom_col(width = 0.7) +
+  coord_flip() + 
+  scale_y_continuous(breaks=seq(0,20, by=1)) +
+  theme(axis.title.x=element_blank(),
+        axis.title.y=element_blank())
+  
+p
+
+```
+
+Writing citation pairs
+```{r}
+writ_cit_pairs <- function(cit_csv, json_name) {
+  cit_pairs <- cit_csv %>%
+    # trim dataset & article dois to correct format
+    mutate(article_doi=str_extract(article_doi, regex),
+           dataset_id=str_extract(dataset_id, regex)) %>%
+    # subset rows
+    filter(is_cited=="y") %>%
+    # select relevant columns
+    select(c(article_doi, dataset_id)) %>%
+    # rename to work with citation pairs function
+    rename(article_id = article_doi) %>%
+    # make sure both have a value
+    drop_na()
+  
+  # set working directory
+  setwd("/Users/samet/Documents/R/citation_pairs")
+  
+  # function from scythe - write_citation_pairs.r - changed to be able to handle invalid dois
+  
+  bib <- cr_cn(cit_pairs$article_id, "bibtex")
+  
+  t <- tempfile()
+  writeLines(unlist(bib), t)
+  
+  # import as a dataframe
+  df <- bib2df::bib2df(t)
+      
+  # merge by DOI = article_id
+  cit_pairs_merge <- cit_pairs %>%
+    rename(DOI = article_id)
+  
+  df <- left_join(df, cit_pairs_merge, by="DOI")
+  
+      # rename for database ingest
+      cit_full <- df %>%
+          dplyr::rename(target_id = .data$dataset_id,
+                 source_id = .data$DOI,
+                 source_url = .data$URL,
+                 origin = .data$AUTHOR,
+                 title = .data$TITLE,
+                 publisher = .data$PUBLISHER,
+                 journal = .data$JOURNAL,
+                 volume = .data$VOLUME,
+                 page = .data$PAGES,
+                 year_of_publishing = .data$YEAR) %>%
+          dplyr::select(.data$target_id, .data$source_id, .data$source_url, .data$origin, .data$title,
+                        .data$publisher, .data$journal, .data$volume, .data$page, .data$year_of_publishing)%>%
+          dplyr::mutate(id = NA, report = NA, metadata = NA, link_publication_date = Sys.Date()) #%>%
+          #dplyr::mutate(publisher = ifelse(.data$publisher == "Elsevier {BV", "Elsevier", "Copernicus"))
+  
+  write_json(cit_full, json_name)
+}
+  
+```
+
+Generate number of flagged datasets
+```{r}
+abs_cit_pairs %>%
+  select(dataset_id) %>%
+  distinct() %>%
+  nrow()
+
+#it's 65
+```
+
+Generate number of secondary citations
+```{r}
+# regex for trimming dois
+regex <- "10\\..*"
+
+# function for retrieving cit num using article dois
+cit_num_from_doi <- function(doi) {
+  try(cr_citation_count(doi)$count)
+}
+
+abs_cit_gooddoi <- abs_cit %>%
+  mutate(article_doi=str_extract(article_doi, regex), journal="") %>%
+  # select only datasets with citations
+  filter(num_cit>0, !is.na(article_doi)) 
+  # trim article dois to correct format & creating empty journal field to populate
+   
+  
+# retrieving journal names using article dois
+for (i in 1:nrow(abs_cit_gooddoi)){
+  if (length(cit_num_from_doi(article_doi)> 0)) {
+    abs_cit_gooddoi$journal_cit_count[i] <- cit_num_from_doi(abs_cit_gooddoi$article_doi[i])
+  }
+}
+
+View(abs_cit_gooddoi)
+
+```
+
+Secondary Citations Histogram
+```{r}
+ggplot(abs_cit_gooddoi, aes(x=journal_cit_count)) + 
+  geom_histogram(binwidth=25, color="white", boundary=0) + 
+  xlab("number of citations")+
+  ylab("count") + 
+  scale_x_continuous(breaks=seq(0, 450, by=25)) +
+  scale_y_continuous(breaks=seq(0, 100, by=5))
+```
+
+Citations Per Dataset
+```{r}
+cit_per_ds <- abs_cit_gooddoi %>%
+  select(dataset_url, num_cit) %>%
+  distinct()
+
+ggplot(cit_per_ds, aes(x=num_cit)) + 
+  geom_histogram(binwidth=1, color="white") + 
+  xlab("number of citations")+
+  ylab("count") + 
+  scale_x_continuous(breaks=seq(1, 450, by=1)) +
+  scale_y_continuous(breaks=seq(0, 100, by=5))
+```

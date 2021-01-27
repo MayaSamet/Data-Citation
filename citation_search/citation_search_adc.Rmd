@@ -1,0 +1,85 @@
+---
+title: "Dataset Abstract Search"
+author: "Maya Samet"
+date: "9/22/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(stringr)
+library(dplyr)
+
+# load in categorization data
+abstracts_df<-read.csv("dataset_categorization.csv", colClasses = "character") %>% 
+  select(url, id, abstract)
+```
+
+## ADC Citation Search
+
+Using R stringr package & regex techniques to search through the abstracts of datasets in the Arctic Data Center for references to dataset citations in articles.
+
+### Using regexes for text search with `stringr::str_extract`
+
+Here's an example of how to use `stringr::str_extract` for regex searches. I'm going to select a long abstract I found from preloaded abstracts dataset. Somewhere in this abstract there is a reference to a connected publication. 
+
+```{r}
+sample_abstract <- abstracts_df[64,3]
+sample_abstract
+```
+
+Too long, did not read. Instead of reading through the entire abstract for publication mentions we can use this regex, which when used as the `pattern` argument of `stringr::str_extract_all` will capture and return the entire sentence(s) that the chosen keyword "publish/publication" is found in.
+
+```{r}
+publication_regex <- "[^.!?]*publi(?:sh|cation)[^.!?]*"
+str_extract(sample_abstract, publication_regex)
+
+# You can run `str_extract` on a list too
+str_extract_all(c("irrelevant abstract", sample_abstract, "This is an oceanography dataset. It was used in a publication.", "We collected this data. The data was published"), publication_regex)
+```
+
+
+Reading through extracted text from the abstracts is much easier than reading through the abstracts themselves. Let's jazz the regex up a bit to look for terms like "article" and "paper" as well and search through all ADC abstracts. This might take a few minutes to run
+
+```{r, cache=FALSE}
+regex <- "[^.!?]*(?:article|paper|journal|publi(?:sh|cation))[^.!?]*"
+
+# This code creates a df including only dois & abstracts that triggered the regex
+# and adds a column with the extracted text. 
+abstracts_extracted <- abstracts_df %>%
+  mutate(citation_reference=paste(str_extract_all(abstract, regex))) %>%
+  filter(citation_reference != "character(0)")
+
+head(abstracts_extracted$citation_reference)
+```
+
+Now saving the csv
+```{r}
+write.csv(abstracts_extracted, file="adc_publication_keyword_search_all.csv")
+
+```
+
+Returning to this document 3 months later with a few more abstract search terms I'd like to try - et al./et alia, (name year) e.g. (Jones 2014), and direct mentions of the word citation/cited. 
+```{r}
+regex2 <- "[^.!?]*\\b(?:et al|\\(.*\\d{4}\\)|cit(?:ation|ed))[^.!?]*"
+
+# This code creates a df including only dois & abstracts that triggered the regex
+# and adds a column with the extracted text. 
+abstracts_extracted2 <- abstracts_df %>%
+  mutate(citation_reference=paste(str_extract_all(abstract, regex2))) %>%
+  filter(citation_reference != "character(0)")
+```
+```{r}
+head(abstracts_extracted)
+```
+Now to filter out results appearing in the last abstract search:
+
+```{r}
+abstracts_extracted2<-anti_join(abstracts_extracted2, abstracts_extracted, by="id")
+
+```
+
+```{r}
+write.csv(abstracts_extracted2, file="adc_publication_keyword_search_september.csv")
+
+```
