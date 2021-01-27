@@ -1,9 +1,9 @@
 # Data-Citation
 Misc. code written in the scope of the Data Citation and Reuse Project at the Arctic Data Center.
 
-# Directory
+### Directory
 
-# Important Links
+### Important Links
 Google Drive:
 
 Arctic Data Center Data Team Training: https://nceas.github.io/datateam-training/training/
