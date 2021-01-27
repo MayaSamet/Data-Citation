@@ -9,9 +9,10 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(stringr)
 library(dplyr)
+library(readr)
 
 # load in categorization data
-abstracts_df<-read.csv("dataset_categorization.csv", colClasses = "character") %>% 
+abstracts_df<-read_csv("dataset_categorization.csv") %>% 
   select(url, id, abstract)
 ```
 
@@ -55,9 +56,11 @@ head(abstracts_extracted$citation_reference)
 
 Now saving the csv
 ```{r}
-write.csv(abstracts_extracted, file="adc_publication_keyword_search_all.csv")
+#write.csv(abstracts_extracted, file="adc_publication_keyword_search_pt1_raw.csv")
 
 ```
+
+---
 
 Returning to this document 3 months later with a few more abstract search terms I'd like to try - et al./et alia, (name year) e.g. (Jones 2014), and direct mentions of the word citation/cited. 
 ```{r}
@@ -80,6 +83,6 @@ abstracts_extracted2<-anti_join(abstracts_extracted2, abstracts_extracted, by="i
 ```
 
 ```{r}
-write.csv(abstracts_extracted2, file="adc_publication_keyword_search_september.csv")
+#write.csv(abstracts_extracted2, file="adc_publication_keyword_search_pt2_raw.csv")
 
 ```
