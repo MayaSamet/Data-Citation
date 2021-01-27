@@ -13,7 +13,7 @@ library(rcrossref)
 
 ## AODTM-5 - citation survey
 
-First, ingest text block including all 173 citations of the AODTM-5 model development article. I've deleted some text in some of them (foreign language / special characters), leaving only viable ASCII characters, so some citations may look incomplete of include only a year. 
+First, ingest text block including all 173 citations of the AODTM-5 model development article. I've deleted some text in some of them (foreign language / special characters), leaving only viable ASCII characters, so some citations may look incomplete. 
 
 ```{r}
 aodtm5_citinglit <- "(2020).
@@ -224,7 +224,6 @@ Next, use the `stringr` package to look only for citation years. We'll be lookin
 pub_yrs<-stringr::str_extract_all(aodtm5_citinglit, "\\(\\d\\d\\d\\d\\)")
 
 View(pub_yrs)
-?rcrossref
 ```
 
 rcrossref attempt
@@ -236,8 +235,6 @@ my_citations <- rcrossref::cr_cn(my_references_doi,
                                  style = "chicago-note-bibliography")
 
 my_citations
-?cr_cn
-?c
 ```
 
 ```{r}
