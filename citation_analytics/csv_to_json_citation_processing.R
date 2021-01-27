@@ -6,6 +6,8 @@ library(stringr)
 
 regex <- "(?:10\\..*)|(?:urn.*)"
 
+### dbo cits
+
 dbo_cits <- read_csv("dbo_cit_raw.csv") %>%
   mutate(article_doi=str_extract(article_doi, regex), 
          dataset_doi=str_extract(dataset_doi, regex)) %>%
